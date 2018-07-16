@@ -6,6 +6,7 @@ os="$( awk -F '=' '/^ID=/ {print $2}' /etc/os-release 2>&- )"
 
 if [ "${os}" == "arch" ] \
 || [ "${os}" == "blackarch" ] \
+|| [ "${os}" == "manjaro" ] \
 || [ "${os}" == "debian" ] \
 || [ "${os}" == "deepin" ] \
 || [ "${os}" == "elementary" ] \
@@ -332,7 +333,9 @@ func_package_deps(){
     fi
 
   elif [ "${os}" ==  "arch" ] \
-  || [ "${os}" == "blackarch" ]; then
+  || [ "${os}" == "blackarch" ] \
+  || [ "${os}" == "manjaro" ] \
+  ; then
     sudo pacman -Sy ${arg} --needed mingw-w64-binutils mingw-w64-crt mingw-w64-gcc mingw-w64-headers mingw-w64-winpthreads \
       mono mono-tools mono-addins python2-pip wget unzip ruby python python2 python-crypto gcc-go ca-certificates base-devel python-pip krb5 samba
     if [[ "$?" -ne "0" ]]; then
@@ -498,7 +501,8 @@ func_package_deps(){
       echo -e " ${RED}[ERROR] ${msg}${RESET}\n"
     fi
   elif [ "${os}" == "arch" ] \
-  || [ "${os}" == "blackarch" ]; then
+  || [ "${os}" == "blackarch" ] \
+  || [ "${os}" == "manjaro" ]; then
     echo -e "\n\n [*] ${YELLOW}Installing Wine 32-bit on x86_64 System (via PACMAN)${RESET}\n"
     if grep -Fxq "#[multilib]" /etc/pacman.conf; then
       echo "[multilib]\nInclude = /etc/pacman.d/mirrorlist" >> /etc/pacman.conf
@@ -935,6 +939,8 @@ else
     echo -e " [I] ${YELLOW}Arch Linux ${arch} detected...${RESET}\n"
   elif [ "${os}" == "blackarch" ]; then
     echo -e " [I] ${YELLOW}BlackArch Linux ${arch} detected...${RESET}\n"
+  elif [ "${os}" == "manjaro" ]; then
+    echo -e " [I] ${YELLOW}Manjaro Linux ${arch} detected...${RESET}\n"
   elif [ "${os}" == "debian" ]; then
     echo -e " [!] ${YELLOW}Debian Linux sid/TESTING ${arch} *possibly* detected..."
     echo -e "     If you are not currently running Debian Testing, you should exit this installer!${RESET}\n"
